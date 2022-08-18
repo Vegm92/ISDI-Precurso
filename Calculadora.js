@@ -26,4 +26,12 @@ function calculadora(num1,num2){
     console.log(resultados)
     }
 }
+//ejemplo: 
 calculadora(5,8)
+/*
+['Los resultados obtenidos són: 
+ 5 + 8 = 13 
+ 5 - 8 = -3
+ 5 * 8 = 40
+ 5 / 8 = 0.625']
+ */
