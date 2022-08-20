@@ -18,9 +18,9 @@ function calculadora(num1,num2){
         console.log(`La raiz cuadrada de ${num1} es ${raizcua}`);
     }
     else{
-    let suma = (num1 + num2);
-    let resta = (num1 - num2);
-    let multiplicación = (num1 * num2);
+    let suma = (num1 + num2).toFixed(3);
+    let resta = (num1 - num2).toFixed(3);
+    let multiplicación = (num1 * num2).toFixed(3);
     let división = (num1 / num2).toFixed(3);
     resultados.push(`Los resultados obtenidos són: \n ${num1} + ${num2} = ${suma} \n ${num1} - ${num2} = ${resta}\n ${num1} * ${num2} = ${multiplicación}\n ${num1} / ${num2} = ${división}`);
     console.log(resultados)
