@@ -25,7 +25,7 @@ const getNumbers = () => { //pide ingresar un numero hasta que el usuario añada
 
 const calcular = () => {
     let calculos = [];
-debugger;
+
     if(promptNumbers.length < 2){
         const raizCuadrada = Math.sqrt(promptNumbers[0]);
         calculos.push(`Solo se calculará su raiz cuadrada: ${raizCuadrada.toFixed(3).replace(/[.,]000$/, "")}`);
