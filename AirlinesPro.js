@@ -8,15 +8,15 @@ const flights = [
   { id: 06, to: "Tokyo", from: "Madrid", cost: 1500, scale: true },
   { id: 07, to: "Shangai", from: "Barcelona", cost: 800, scale: true },
   { id: 08, to: "Sydney", from: "Barcelona", cost: 150, scale: true },
-  { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false },
+  { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false }
 ];
+
 let user = "";
 let admin = false;
 
 //nombre usuario + bienvenida
 const bienvenida = () => {
   let usuario ="";
-  //debugger;
   do{
     usuario = prompt("Hola! Introduce tu nombre porfavor")
     if (usuario === ""){
@@ -25,18 +25,22 @@ const bienvenida = () => {
     }
     if(usuario === null){
       if(confirm("¿Deseas salir?")){
-        break
+        despedida();
         }else {
           continue
         }
     }
     else{
-      alert(`¡Bienvenido ${usuario}!`)
+      alert(`¡Bienvenid@ ${usuario}!`)
       return usuario
     }
   }
   while(usuario !== "" )
 }
+
+  const despedida = () => {
+    alert(`¡Gracias por su visita ${user}!`)
+  }
 
 //visualización vuelos, origen, destino, coste y escala + 5 ultimos vuelos
 const panelInformativo = () => {
@@ -51,7 +55,7 @@ const panelInformativo = () => {
   });
     alert(`Ésta es la tabla de vuelos de hoy ${user}`);
     console.table(infoVuelo);
-    console.log(`Los últimos 5 vuelos del día serán ${ultimosVuelos}`);
+    console.log(`Los últimos 5 vuelos del día serán con destino: ${ultimosVuelos}`);
 }
 
 //coste medio vuelos
@@ -70,20 +74,104 @@ const vuelosEscala = () =>{
     console.log(`Los vuelos con destino ${vuelosEscala} deberán hacer escala`);
     
 }
-
+//check if user is admin
 const userIsAdmin = () =>{
   let isAdmin = false;
   let isUser = true;
-  debugger;
+  
   if(confirm(`¿Quieres acceder como admin?`)){
     isAdmin = true;
-  } else {
     isUser = false
+    return adminFunct();
+  }else {
+    despedida();
   }
 
 }
-user = bienvenida();
-panelInformativo();
-vuelosEscala();
-costeMedio();
-userIsAdmin();
+
+const buscarVuelos = () =>{
+  let buscarPrecio = false;
+  let resultBusqueda = [];
+  
+  if(confirm(`¿Quieres hacer una busqueda por precio?`)){
+    buscarPrecio = true;
+  }else {
+    buscarPrecio = false;
+    }
+  do{
+     const buscar = prompt(`Introduce el precio máximo:`);
+      console.log(`Éstos son los vuelos por ${buscar} o menos:`);
+    
+    flights.forEach(element => {
+      if(element.cost <= buscar){
+        resultBusqueda.push(element)
+      }
+    });
+    console.table(resultBusqueda);
+    if(confirm(`¿Quieres volver a buscar?`)){
+      }else {
+        buscarPrecio = false;
+      }
+  }
+  while(buscarPrecio === true){
+  }
+}
+
+const adminFunct = () => {
+  let nuevoVuelo ={};
+  let updatedFlights = {};
+  do{
+    if (confirm("¿Quieres añadir u nuevo vuelo?") && flights.length < 16){
+      const crearVuelos = (from, to, cost, scale, id ) => {
+        id = Number(prompt(`Introduce el número de ID del vuelo.`))
+        to = prompt(`Introduce el destino:`)
+        from = prompt(`Introduce el origen:`)
+        cost = Number(prompt(`Introduce el coste:`))
+        scale = confirm(`Tiene escalas?`)
+
+        nuevoVuelo ={ id, to, from, cost, scale};
+        flights.push(nuevoVuelo);
+        console.table(flights);
+        return alert(`El vuelo ${nuevoVuelo.id} se añadió correctamente`)
+      }
+      crearVuelos()
+    }
+    
+    else {
+      if (confirm("¿Quieres elimiar un vuelo?")){
+        const eliminarVuelos = () =>{
+          console.table(flights)
+          const idDelete = Number(prompt(`Introduce el ID del vuelo a eliminar: `));
+          flights.splice(idDelete, 1)
+          console.table(flights)
+          return alert(`El vuelo ${idDelete} se ha eliminado`)
+        }
+        eliminarVuelos()
+      }
+    };
+
+    if ( flights.length < 15 && confirm(`Continuar? (total vuelos: ${flights.length}/15)`)){
+      if(flights.length >= 15){
+        alert(`Ya has llegado al limite de 15 vuelos`)
+      }
+      console.table(flights);
+      return adminFunct();
+    } 
+    }
+  
+  while(admin === true){
+
+  }
+}
+
+const main = () =>{
+  console.log(`Estos son los vuelos de hoy:`, flights);
+  user = bienvenida();
+  panelInformativo();
+  vuelosEscala();
+  costeMedio();
+  buscarVuelos();
+  admin = userIsAdmin();
+}
+
+main();
