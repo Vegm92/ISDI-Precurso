@@ -1,22 +1,25 @@
-let resultados = [];
+let result = [];
 let promptNumbers = [];
 
 
 
-const getNumbers = () => { //pide ingresar un numero hasta que el usuario añada un valor Null o 0
+const getNumbers = () => { 
     let givenNumbers = [];
     let number;
     do{
-        number =  Number(prompt ("Introduce los números a calcular. Para calcular la raíz cuadrada, añade un solo número."));
+        number =  Number(prompt ("Añade número y pulsa aceptar para seguir añadiendo.\n Si solo añades un numero, se calculará la raiz cuadrada."));
         if (isNaN(number)){
             alert("Error, introduce únicamente números")
             return getNumbers();
         }
         if (givenNumbers.length < 1 && number === 0) {
-             alert("Introduce almenos un número");
-            return getNumbers();
+             if(confirm("Introduce almenos un número. Si quieres salir pulsa cancelar.")){
+                 return getNumbers();
+             }else{ 
+                despedida()
             }
-            if(number !== 0){ //evita pushear 0 cuando +prompt traduce Null a 0.
+            }
+            if(number !== 0){ 
                 givenNumbers.push(number);
             }
     }while (number !== 0)
@@ -25,7 +28,6 @@ const getNumbers = () => { //pide ingresar un numero hasta que el usuario añada
 
 const calcular = () => {
     let calculos = [];
-
     if(promptNumbers.length < 2){
         const raizCuadrada = Math.sqrt(promptNumbers[0]);
         calculos.push(`Solo se calculará su raiz cuadrada: ${raizCuadrada.toFixed(3).replace(/[.,]000$/, "")}`);
@@ -39,28 +41,45 @@ const calcular = () => {
     
     calculos.push(`suma: ${suma.toFixed(3).replace(/[.,]000$/, "")}, resta: ${resta.toFixed(3).replace(/[.,]000$/, "")},
     multiplicación: ${multiplicación.toFixed(3).replace(/[.,]000$/, "")}, división: ${división.toFixed(3).replace(/[.,]000$/, "")}`); //replace cambia los decimales por un espacio si no se usan
-    return calculos;   
-        
+    
+    return calculos;      
     }
+    
 }
 const reCalcular = () => {
-    if(confirm("¿Quieres introducir nuevos números?")){
-        return getNumbers();
-    } 
+    if(confirm("¿Quieres calcular de nuevo?")){
+        return mainCalculator();
+    } else {
+        despedida();
+    }
 
 }
 const  mostrarResultados = () => {
-    if(promptNumbers.length < 2){
-        alert(`El número introducido es: ${promptNumbers}: ${resultados}`)
-        
-    }else {
-        alert(`Los números introducidos són: ${promptNumbers}, y los calculos realizados: ${resultados}`)
+    debugger;
 
+    do{
+        if(promptNumbers.length < 2 && result.length > 1){
+            alert(`El número introducido es: ${promptNumbers}: ${result}`)
+            
+        }
+        if(promptNumbers.length > 1 && result.length > 1){
+
+            alert(`Los números introducidos són: ${promptNumbers}, y los calculos realizados: ${result}`)
+    
+        }
     }
+    while (result.length > 1) {
+        
+    }
+    reCalcular();
+}
+const despedida = () =>{
+   return alert(`Gracias por usar esta calculadora!`)
 }
 
-
-promptNumbers = getNumbers();
-resultados = calcular();
-mostrarResultados();
-reCalcular();
+const mainCalculator = () =>{
+    promptNumbers = getNumbers();
+    result = calcular();
+    mostrarResultados();
+}
+mainCalculator();
