@@ -14,7 +14,7 @@ const getNumbers = () => {
              if(confirm("Introduce almenos un número. Si quieres salir pulsa cancelar.")){
                  return getNumbers();
              }else{ 
-                despedida()
+                 despedida();
             }
             }
             if(number !== 0){ 
@@ -54,7 +54,7 @@ const reCalcular = () => {
         promptNumbers = [];
         return mainCalculator();
     } else {
-        despedida();
+        return despedida();
     }
 
 }
@@ -78,7 +78,8 @@ const  mostrarResultados = () => {
 }
 
 const despedida = () =>{
-   return alert(`Gracias por usar esta calculadora!`)
+   return alert(`Gracias por usar esta calculadora!`);
+    
 }
 
 const mainCalculator = () =>{
