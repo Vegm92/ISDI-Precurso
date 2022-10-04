@@ -10,11 +10,12 @@ const flights = [
   { id: 08, to: "Sydney", from: "Barcelona", cost: 150, scale: true },
   { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false },
 ];
+
 let user = "";
-//nombre usuario + bienvenida
+let exit = false;
+debugger;
 const bienvenida = () => {
-  let usuario ="";
-  //debugger;
+  let usuario = "";
   do{
     usuario = prompt("Hola! Introduce tu nombre porfavor")
     if (usuario === ""){
@@ -23,9 +24,7 @@ const bienvenida = () => {
     }
     if(usuario === null){
       if(confirm("¿Deseas salir?")){
-        break
-        }else {
-          continue
+        return exit = true
         }
     }
     else{
@@ -49,26 +48,38 @@ const panelInformativo = () => {
     }
   });
   alert(`Ésta es la tabla de vuelos de hoy ${user}`)
-  alert(console.table(infoVuelo));
+  console.table(infoVuelo);
   console.log(`Los últimos 5 vuelos del día serán ${ultimosVuelos}`)
-  }
+}
   
-  //coste medio vuelos
-  const costeMedio = () =>{
+const costeMedio = () =>{
     let costeMedio = 0;
     let coste = flights.map(element => element.cost).reduce((a,b) => a +b, 0);
     costeMedio = coste / flights.length;
     console.log(`El Coste medio de los vuelos es de ${costeMedio}€`);
-  }
-  //vuelos con escala
-  const vuelosEscala = () =>{
+    despedida();
+}
+
+const vuelosEscala = () =>{
     let escalas = flights.filter(escala => escala.scale === true)
     console.log(escalas);
     let vuelosEscala = escalas.map(escala => escala.to);
     console.log(`Los vuelos con destino ${vuelosEscala} deberán hacer escala`);
     
+}
+
+const despedida = () =>{
+  return alert(`Hasta pronto!`)
+}
+
+const main = () =>{
+  user = bienvenida();
+  if(exit === false){
+    panelInformativo();
+    vuelosEscala();
+    costeMedio();
+  }else{
+    despedida();
   }
-user = bienvenida();
-panelInformativo();
-vuelosEscala();
-costeMedio();
+}
+main();
