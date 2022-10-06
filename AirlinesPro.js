@@ -18,10 +18,14 @@ let admin = false;
 const bienvenida = () => {
   let usuario ="";
   do{
-    usuario = prompt("Hola! Introduce tu nombre porfavor")
+    usuario = prompt("Hola! Introduce tu nombre por favor")
     if (usuario === ""){
-      alert(`Bienvenido usuario anonimo ;)`)
-      return usuario = "anonimo"
+      alert(`Bienvenido usuario anónimo ;)`)
+      return usuario = "anónimo"
+    }
+    if(!isNaN(usuario)){
+      alert(`Introduce únicamente letras por favor.`)
+      usuario = prompt(" Introduce tu nombre por favor")
     }
     if(usuario === null){
       if(confirm("¿Deseas salir?")){
@@ -82,6 +86,7 @@ const userIsAdmin = () =>{
   if(confirm(`¿Quieres acceder como admin?`)){
     isAdmin = true;
     isUser = false
+    alert("Accediendo a funciones de administrador...")
     return adminFunct();
   }else {
     despedida();
@@ -96,7 +101,7 @@ const buscarVuelos = () =>{
   if(confirm(`¿Quieres hacer una busqueda por precio?`)){
     buscarPrecio = true;
   }else {
-    buscarPrecio = false;
+    return buscarPrecio = false;
     }
   do{
      const buscar = prompt(`Introduce el precio máximo:`);
@@ -123,10 +128,22 @@ const adminFunct = () => {
   do{
     if (confirm("¿Quieres añadir u nuevo vuelo?") && flights.length < 16){
       const crearVuelos = (from, to, cost, scale, id ) => {
-        id = Number(prompt(`Introduce el número de ID del vuelo.`))
+        id = flights.length
         to = prompt(`Introduce el destino:`)
+          if (to === null){
+            alert("Debes introducir un destino")
+            to = prompt("Nombre del destino:")
+          }
         from = prompt(`Introduce el origen:`)
+          if (from === null){
+            alert("Debes introducir un origen")
+            from = prompt("Nombre del origen:")
+          }
         cost = Number(prompt(`Introduce el coste:`))
+          if (cost === 0){
+            alert("Debes introducir un coste, no creo que sea gratis no??")
+            cost = Number(prompt("Coste del vuelo:"))
+          }
         scale = confirm(`Tiene escalas?`)
 
         nuevoVuelo ={ id, to, from, cost, scale};
@@ -150,13 +167,22 @@ const adminFunct = () => {
       }
     };
 
-    if ( flights.length < 15 && confirm(`Continuar? (total vuelos: ${flights.length}/15)`)){
+    if ( flights.length < 15 && confirm(`Continuar editando vuelos? (total vuelos: ${flights.length}/15)`)){
       if(flights.length >= 15){
         alert(`Ya has llegado al limite de 15 vuelos`)
       }
       console.table(flights);
       return adminFunct();
-    } 
+    } else {
+      if(confirm("Seguir como admin?")){
+        return adminFunct();
+      }else{
+        if(confirm("acceder como usuario?")){
+          return admin = false
+            
+        }
+      }
+    }
     }
   
   while(admin === true){
@@ -164,14 +190,21 @@ const adminFunct = () => {
   }
 }
 
+const goodbye = ()=>{
+  return console.log(`Hasta la próxima ${user}`)
+}
+
 const main = () =>{
-  console.log(`Estos son los vuelos de hoy:`, flights);
   user = bienvenida();
-  panelInformativo();
-  vuelosEscala();
-  costeMedio();
-  buscarVuelos();
+  console.log(`Estos son los vuelos de hoy:`, flights);
   admin = userIsAdmin();
+  if (admin === false){
+    panelInformativo();
+    vuelosEscala();
+    costeMedio();
+    buscarVuelos();
+  }
+  goodbye();
 }
 
 main();
