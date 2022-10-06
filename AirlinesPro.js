@@ -13,7 +13,7 @@ const flights = [
 
 let user = "";
 let admin = false;
-
+debugger;
 //nombre usuario + bienvenida
 const bienvenida = () => {
   let usuario ="";
@@ -130,18 +130,18 @@ const adminFunct = () => {
       const crearVuelos = (from, to, cost, scale, id ) => {
         id = flights.length
         to = prompt(`Introduce el destino:`)
-          if (to === null){
+          while (to === null || to === ""){
             alert("Debes introducir un destino")
             to = prompt("Nombre del destino:")
           }
         from = prompt(`Introduce el origen:`)
-          if (from === null){
+          while (from === null || from === ""){
             alert("Debes introducir un origen")
             from = prompt("Nombre del origen:")
           }
         cost = Number(prompt(`Introduce el coste:`))
-          if (cost === 0){
-            alert("Debes introducir un coste, no creo que sea gratis no??")
+          while (cost === 0 || cost === isNaN || cost === undefined){
+            alert("Debes introducir un coste, únicamente números")
             cost = Number(prompt("Coste del vuelo:"))
           }
         scale = confirm(`Tiene escalas?`)
