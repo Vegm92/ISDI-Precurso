@@ -11,143 +11,151 @@ const flights = [
   { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false }
 ];
 
-let user = "";
-let admin = false;
-debugger;
-//nombre usuario + bienvenida
-const bienvenida = () => {
-  let usuario ="";
-  do{
-    usuario = prompt("Hola! Introduce tu nombre por favor")
-    if (usuario === ""){
-      alert(`Bienvenido usuario anónimo ;)`)
-      return usuario = "anónimo"
-    }
-    if(!isNaN(usuario)){
-      alert(`Introduce únicamente letras por favor.`)
-      usuario = prompt(" Introduce tu nombre por favor")
-    }
-    if(usuario === null){
-      if(confirm("¿Deseas salir?")){
-        despedida();
-        }else {
-          continue
-        }
-    }
-    else{
-      alert(`¡Bienvenid@ ${usuario}!`)
-      return usuario
-    }
+const user = {
+  name: "", typeUser: "", 
+}
+
+
+const sessionType = () =>{
+  user.typeUser = prompt("Hola!, ¿Quieres acceder como user o admin?")
+  if (user)
+  while(user.typeUser !== "admin" && user.typeUser !== "user"){
+    user.typeUser = prompt("Escribe únicamente user o admin para continuar...")
   }
-  while(usuario !== "" )
-}
-
-  const despedida = () => {
-    alert(`¡Gracias por su visita ${user}!`)
+  while(user.typeUser === "user"){
+    alert("Accediendo como user")
+    return userFunct();
   }
-
-//visualización vuelos, origen, destino, coste y escala + 5 ultimos vuelos
-const panelInformativo = () => {
-  let infoVuelo = [];
-  let ultimosVuelos = [];
-
-  flights.forEach((element) =>{
-    infoVuelo.push(`El vuelo nº: ${element.id} con origen ${element.from} y con destino ${element.to} tiene un coste de ${element.cost} €.`);
-    if (element.id > 4){
-      ultimosVuelos.push(element.to);
-    }
-  });
-    alert(`Ésta es la tabla de vuelos de hoy ${user}`);
-    console.table(infoVuelo);
-    console.log(`Los últimos 5 vuelos del día serán con destino: ${ultimosVuelos}`);
-}
-
-//coste medio vuelos
-const costeMedio = () =>{
-    let costeMedio = 0;
-    let coste = flights.map(element => element.cost).reduce((a,b) => a +b, 0);
-    costeMedio = coste / flights.length;
-    console.log(`El Coste medio de los vuelos es de ${costeMedio}€`);
-}
-
-//vuelos con escala
-const vuelosEscala = () =>{
-    let escalas = flights.filter(escala => escala.scale === true)
-    console.log(escalas);
-    let vuelosEscala = escalas.map(escala => escala.to);
-    console.log(`Los vuelos con destino ${vuelosEscala} deberán hacer escala`);
-    
-}
-//check if user is admin
-const userIsAdmin = () =>{
-  let isAdmin = false;
-  let isUser = true;
-  
-  if(confirm(`¿Quieres acceder como admin?`)){
-    isAdmin = true;
-    isUser = false
-    alert("Accediendo a funciones de administrador...")
+  while(user.typeUser === "admin"){
+    alert("Accediendo como admin")
     return adminFunct();
-  }else {
-    despedida();
   }
-
+  return user.typeUser
 }
 
-const buscarVuelos = () =>{
-  let buscarPrecio = false;
-  let resultBusqueda = [];
-  
-  if(confirm(`¿Quieres hacer una busqueda por precio?`)){
-    buscarPrecio = true;
-  }else {
-    return buscarPrecio = false;
+const userFunct = () =>{
+
+  const bienvenida = () => {
+    //let usuario ="";
+    do{
+      user.name = prompt("Hola! Introduce tu nombre por favor")
+      if (user.name === ""){
+        alert(`Bienvenido usuario anónimo ;)`)
+        return user.name = "anónimo"
+      }
+      if(!isNaN(user.name)){
+        alert(`Introduce únicamente letras por favor.`)
+        user.name = prompt(" Introduce tu nombre por favor")
+      }
+      if(user.name === null){
+        if(confirm("¿Deseas salir?")){
+          goodbye();
+          }else {
+            continue
+          }
+      }
+      else{
+        alert(`¡Bienvenid@ ${user.name}!`)
+        return user.name
+      }
     }
-  do{
-     const buscar = prompt(`Introduce el precio máximo:`);
-      console.log(`Éstos son los vuelos por ${buscar} o menos:`);
-    
-    flights.forEach(element => {
-      if(element.cost <= buscar){
-        resultBusqueda.push(element)
+    while(user.name !== "" )
+  }
+
+  const panelInformativo = () => {
+    let infoVuelo = [];
+    let ultimosVuelos = [];
+  
+    flights.forEach((element) =>{
+      infoVuelo.push(`El vuelo nº: ${element.id} con origen ${element.from} y con destino ${element.to} tiene un coste de ${element.cost} €.`);
+      if (element.id > 4){
+        ultimosVuelos.push(element.to);
       }
     });
-    console.table(resultBusqueda);
-    if(confirm(`¿Quieres volver a buscar?`)){
+      alert(`Ésta es la tabla de vuelos de hoy ${user.name}`);
+      console.table(infoVuelo);
+      console.log(`Los últimos 5 vuelos del día serán con destino: ${ultimosVuelos}`);
+  }
+
+  const costeMedio = () =>{
+      let costeMedio = 0;
+      let coste = flights.map(element => element.cost).reduce((a,b) => a +b, 0);
+      costeMedio = coste / flights.length;
+      console.log(`El Coste medio de los vuelos es de ${costeMedio}€`);
+  }
+
+  const vuelosEscala = () =>{
+      let escalas = flights.filter(escala => escala.scale === true)
+      let vuelosEscala = escalas.map(escala => escala.to);
+      console.log(`Los vuelos con destino ${vuelosEscala} deberán hacer escala`);
+      
+  }
+  
+  const buscarVuelos = () =>{
+    let buscarPrecio = false;
+    let resultBusqueda = [];
+    
+    if(confirm(`¿Quieres hacer una busqueda por precio?`)){
+      buscarPrecio = true;
+    }else {
+      return buscarPrecio = false;
+      }
+    do{
+       const buscar = prompt(`Introduce el precio máximo:`);
+       while (buscar === 0 || isNaN(buscar) || buscar === undefined ) {
+        
+       }
+        console.log(`Éstos son los vuelos por ${buscar} o menos:`);
+      
+      flights.forEach(element => {
+        if(element.cost <= buscar){
+          resultBusqueda.push(element)
+        }
+      });
+      console.table(resultBusqueda);
+      if(confirm(`¿Quieres volver a buscar?`)){
       }else {
         buscarPrecio = false;
       }
+    }
+    while(buscarPrecio === true){
+    }
   }
-  while(buscarPrecio === true){
-  }
+  
+  
+  bienvenida();panelInformativo();costeMedio();vuelosEscala();buscarVuelos();goodbye();
 }
+
 
 const adminFunct = () => {
   let nuevoVuelo ={};
   let updatedFlights = {};
+  
+
   do{
     if (confirm("¿Quieres añadir u nuevo vuelo?") && flights.length < 16){
       const crearVuelos = (from, to, cost, scale, id ) => {
         id = flights.length
         to = prompt(`Introduce el destino:`)
-          while (to === null || to === ""){
-            alert("Debes introducir un destino")
+          while (to === null || to === "" || to.match(/\d+/)){
+            alert("Debes introducir un destino válido")
             to = prompt("Nombre del destino:")
           }
         from = prompt(`Introduce el origen:`)
-          while (from === null || from === ""){
-            alert("Debes introducir un origen")
+          while (from === null || from === "" || from.match(/\d+/)){
+            alert("Debes introducir un origen válido")
             from = prompt("Nombre del origen:")
           }
-        cost = Number(prompt(`Introduce el coste:`))
-          while (cost === 0 || cost === isNaN || cost === undefined){
+        cost = +prompt(`Introduce el coste:`)
+          while (cost === 0 || isNaN(cost) || cost === undefined){
             alert("Debes introducir un coste, únicamente números")
-            cost = Number(prompt("Coste del vuelo:"))
+            cost = +prompt("Coste del vuelo:")
           }
         scale = confirm(`Tiene escalas?`)
 
         nuevoVuelo ={ id, to, from, cost, scale};
         flights.push(nuevoVuelo);
+        console.clear();
         console.table(flights);
         return alert(`El vuelo ${nuevoVuelo.id} se añadió correctamente`)
       }
@@ -159,7 +167,8 @@ const adminFunct = () => {
         const eliminarVuelos = () =>{
           console.table(flights)
           const idDelete = Number(prompt(`Introduce el ID del vuelo a eliminar: `));
-          flights.splice(idDelete, 1)
+          flights.splice(idDelete, 1);
+          console.clear();
           console.table(flights)
           return alert(`El vuelo ${idDelete} se ha eliminado`)
         }
@@ -177,34 +186,42 @@ const adminFunct = () => {
       if(confirm("Seguir como admin?")){
         return adminFunct();
       }else{
-        if(confirm("acceder como usuario?")){
-          return admin = false
+        if(confirm("Salir de la aplicación?")){
+          user.typeUser = "";
+          return goodbye();
             
         }
       }
     }
     }
   
-  while(admin === true){
-
+  while(user.typeUser === "admin"){
   }
+
+
+
+
 }
 
 const goodbye = ()=>{
-  return console.log(`Hasta la próxima ${user}`)
+  console.log(`Hasta la próxima ${user.name}`)
+  return   user.typeUser = ""
 }
 
-const main = () =>{
-  user = bienvenida();
-  console.log(`Estos son los vuelos de hoy:`, flights);
-  admin = userIsAdmin();
-  if (admin === false){
-    panelInformativo();
-    vuelosEscala();
-    costeMedio();
-    buscarVuelos();
+
+//newmain
+
+const main = () => {
+  sessionType();
+  do{
+    while(user.typeUser === "admin"){
+      return adminFunct();
+    }
+    while (user.typeUser === "user") {
+      return userFunct();
+    }
+  }while(user.typeUser !==""){
+
   }
-  goodbye();
 }
-
 main();
