@@ -114,6 +114,7 @@ const userFunct = () =>{
       });
       console.table(resultBusqueda);
       if(confirm(`¿Quieres volver a buscar?`)){
+        resultBusqueda = [];
       }else {
         buscarPrecio = false;
       }
