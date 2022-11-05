@@ -1,10 +1,27 @@
 let bombo = 0;
 let user = "";
 let carta = [];
-let turnos = 0; 
+let turns = 0; 
 let isBingo = false;
+let playBingo = false;
+let nextTurn = false;
 let puntuation = 1000;
 let matches = 0; 
+
+const leaderBoard = () =>{
+    const board = new Map([
+        ["Maria", 500],
+        ["Victor", 600],
+        ["Roberto", 700],
+        ["Anna", 800]
+    ])
+    const sortedLeaderBoard = new Map([...board].sort((a, b) => b[1] - a[1]));
+    console.log("La tabla de puntuaciones queda de la siguiente manera: ")
+    sortedLeaderBoard.forEach((value, key) => {
+        console.log(`${key} => ${value} puntos!`)
+      })
+
+}
 
 const wellcome = () =>{
     user = prompt(`Hola! Por favor introduce tu nombre`)
@@ -12,7 +29,17 @@ const wellcome = () =>{
         alert("Debes introducir un nombre válido")
         user = prompt("Introduce tu nombre.")
     }
-    return alert(`Saludos ${user}!`)
+    alert(`Saludos ${user}!`)
+    if (confirm("Quieres jugar al bingo?")){
+        console.log("Iniciando bingo...");
+        playBingo = true;
+        return 
+    } else {
+        confirm("Quieres salir?")
+        fareWell();
+        return 
+    }
+     
 }
 
 const bingoCard = () =>{
@@ -84,10 +111,10 @@ const newTurn = () =>{
 
     let seguir = confirm("¿Quieres sacar otra bola?")
     if (seguir){
-        turnos ++;
-        puntuation -= 25;
-        console.log(`turnos realizados: ${turnos} y tu puntuacion es: ${puntuation}`)
-        bingo();
+        turns ++;
+        puntuation -= 15;
+        console.log(`turnos realizados: ${turns} y tu puntuacion es: ${puntuation}`)
+        nextTurn = true;
     } else {
     alert("Gracias por jugar!")
     return;
@@ -96,41 +123,63 @@ const newTurn = () =>{
 
 const bingoWin = () =>{
     if(matches === 15){
-        debugger;
         alert(`Bingo!`);
         isBingo = true;
+        board.set 
 
-        return isBingo;
+        return endBingoCard();
     }
 }
 
 const endBingoCard = () =>{
-     console.log(`Has completado tu cartón en ${turnos} turnos, felicidades!`)
+     console.log(`Genial ${user}, has completado tu cartón en ${turns} turnos, felicidades!`)
+     console.log(`La tabla de clasificación queda de la siguiente manera: `)
      console.log(`Gracias por jugar ${user}!`)
      return 
 }
 
-const initGame = () =>{
-    while (!isBingo) {
-        wellcome();
-        bingoCard(1,16);
-        bingo();
-        
-    }
+const tutorialPuntuation = () =>{
+    console.log(`La puntuación inicial es de ${puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
 }
 
-const bingo = () => {
-   /*  do{
-        linea();
-        bomboRandom();
-        númeroMatch();
+const fareWell = () =>{
+    let goodBye = alert("Adiós, gracias por jugar!")
+
+    if (confirm("Confirma para salir")){
+       return goodBye;
+    } else{
+        if (confirm("Reiniciar el juego?")){
+            return initGame()
+        }else {
+            return goodBye; 
+        }
     }
-    while (isBingo === false){
-        fincarton();
-    } 
-     */
 
+}
 
+const initGame = () =>{
+    debugger;
+   wellcome();
+   leaderBoard();
+   switch (playBingo) {
+    case true:
+        tutorialPuntuation(),   bingoCard(), bingo()
+        break;
+    case false:
+        fareWell();
+    default: 
+        leaderBoard();
+        break;
+   }
+}
+
+const bingo = () =>{
+   do{
+       bomboRandom(), matchNumBombo(), bingoWin()  
+} while (nextTurn && !isBingo) {
+    
+}
+   
 }
 
 initGame();
