@@ -2,8 +2,6 @@ let bombo = 0; let carta = []; let historialBombo = []
 let isBingo = false, playBingo = false, nextTurn = false;
 let user = "", puntuation = 1000, matches = 0, turns = 0;  
 
-debugger;
-
 const leaderBoard = () =>{
     const board = new Map([["Maria", 500], ["Victor", 600], ["Roberto", 700], ["Anna", 800]])
     if (isBingo == true){board.set(user, puntuation)}
@@ -11,7 +9,6 @@ const leaderBoard = () =>{
     console.log("La tabla de puntuaciones queda de la siguiente manera: ") 
     return sortedLeaderBoard.forEach((value, key) => {console.log(`${key} => ${value} puntos!`)
       })
-
 }
 
 const wellcome = () =>{
@@ -34,28 +31,45 @@ const wellcome = () =>{
 
 const bingoCard = () =>{
     let randomNum = 0
-    for (let i = 1; carta.length < 17; i++) {
+    for (let i = 1; carta.length < 15; i++) {
         randomNum = getRandomNumber(1, 15)        
         if(carta.includes(randomNum)) { i--; randomNum = 0
-        } else {
-            carta.push(randomNum)
-        } 
+        } else {carta.push(randomNum)} 
     }  
-    alert(`Tu carta de juego es:\n ${carta.join('  ')}`)
+    alert(`Tu carta de juego es:\n ${getRows()} `) /* ${carta.join('  ')} */
     if(confirm("Quieres otro cartón de juego distinto?")){
         carta = [];
-        bingoCard(1,16)
-        return
+        return bingoCard(1,16)
     }
 }
 
-const getRows = () => {
-    const firstRow = carta.slice(0, 5);
-    const secondRow = carta.slice(5, 10);
-    const thirdRow = carta.slice(10, 15);
-    return [firstRow, secondRow, thirdRow];
+const getRows = () => { //funciona los arrays y enseña las filas, pero no funciona el switch :/
+    const firstRow = new Array ( carta.slice(0, 5).join(" ")) ;
+    const secondRow = new Array (carta.slice(5, 10).join(" "));
+    const thirdRow = new Array (carta.slice(10, 15).join(" "));
+    switch (isLineBingo) {
+        case isLineBingo(firstRow):
+                console.log(`Linea! primera fila`);
+            break;
+        case isLineBingo(secondRow):
+                console.log(`Linea! segunda fila`);
+            break;
+        case isLineBingo(thirdRow):
+                console.log(`Linea! tercera fila`);
+            break;      
+            default:
+            break;
+    }
+    return [`${firstRow} \n ${secondRow} \n ${thirdRow}`];
 }
 
+const isLineBingo = (element) => { // no parece que acabe de funcionar 
+    debugger;
+    if (element.every(numcheck =>numcheck ==="X")){
+        return true;
+    }
+
+}
 function getRandomNumber(min, max){
      const number = Math.floor(Math.random() * (max - min +1)) + min;
      return number;
@@ -80,7 +94,7 @@ const matchNumBombo = () =>{
     carta.forEach(element => {
             if (element == bombo){
             carta[index] = "X"
-            console.log(`Genial! El ${bombo} ésta en tu cartón de juego: \n ${carta.join(' ')}`)
+            console.log(`Genial! El ${bombo} ésta en tu cartón de juego: \n ${getRows()}`) /* ${carta.join(' ')} */
             matches ++;
 
             if (carta.every(element =>{
@@ -128,7 +142,7 @@ const endBingoCard = () =>{
 }
 
 const tutorialPuntuation = () =>{
-    console.log(`La puntuación inicial es de ${puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
+  console.log(`La puntuación inicial es de ${puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
 }
 
 const fareWell = () =>{
@@ -146,18 +160,16 @@ const fareWell = () =>{
     }
 
 }
-
+ 
 const initGame = () =>{
    wellcome();
    leaderBoard();
    switch (playBingo) {
     case true:
-        tutorialPuntuation(), bingoCard(), bingo()
+        tutorialPuntuation(), bingoCard(),bingo();
         break;
     case false:
         fareWell();
-    default: 
-        leaderBoard();
         break;
    }
 }
@@ -167,10 +179,4 @@ const bingo = () =>{
        bomboRandom(), matchNumBombo(), bingoWin()  
     } while (nextTurn && !isBingo)   
 }
-
 initGame();
-
-
-
-
-
