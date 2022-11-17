@@ -1,8 +1,15 @@
 let bombo = 0; let carta = []; let historialBombo = [];
 let isBingo = false, playBingo = false, nextTurn = false;
 let user = "", puntuation = 1000, matches = 0, turns = 0; 
-let firstRow = [], secondRow = [], thirdRow = []; 
 
+// const Userdisplay = {   
+//     user : "", 
+//     puntuation : 1000, 
+//     matches : 0, 
+//     turns : 0, 
+// }
+
+debugger;
 const leaderBoard = () =>{
     const board = new Map([["Maria", 500], ["Victor", 600], ["Roberto", 700], ["Anna", 800]])
     if (isBingo == true){board.set(user, puntuation)}
@@ -45,16 +52,16 @@ const bingoCard = () =>{
 }
 
 const getRows = () => { 
-     firstRow = new Array ( carta.slice(0, 5).join(" ")) ;
-     secondRow = new Array (carta.slice(5, 10).join(" "));
-     thirdRow = new Array (carta.slice(10, 15).join(" "));
+    let firstRow = new Array ( carta.slice(0, 5).join(" ")) ;
+    let secondRow = new Array (carta.slice(5, 10).join(" "));
+    let thirdRow = new Array (carta.slice(10, 15).join(" "));
 
     return [`${firstRow} \n ${secondRow} \n ${thirdRow}`];
 }
+let rows = getRows();
 
-const isX = (firstRow, secondRow, thirdRow) => {
-    debugger;
-    Array.from(firstRow).every(element =>{
+const isX = (rows) => {
+    Array.from(rows).every(element =>{
         if (element === "X"){
             console.log("Linea!")
             return true;
@@ -152,7 +159,7 @@ const fareWell = () =>{
     }
 
 }
- 
+
 const initGame = () =>{
    wellcome();
    leaderBoard();
@@ -171,4 +178,5 @@ const bingo = () =>{
        bomboRandom(), matchNumBombo(), isX(), bingoWin()  
     } while (nextTurn && !isBingo)   
 }
+console.log(lineasBingo);
 initGame();
