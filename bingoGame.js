@@ -1,6 +1,7 @@
-let bombo = 0; let carta = []; let historialBombo = []
+let bombo = 0; let carta = []; let historialBombo = [];
 let isBingo = false, playBingo = false, nextTurn = false;
-let user = "", puntuation = 1000, matches = 0, turns = 0;  
+let user = "", puntuation = 1000, matches = 0, turns = 0; 
+let firstRow = [], secondRow = [], thirdRow = []; 
 
 const leaderBoard = () =>{
     const board = new Map([["Maria", 500], ["Victor", 600], ["Roberto", 700], ["Anna", 800]])
@@ -43,33 +44,24 @@ const bingoCard = () =>{
     }
 }
 
-const getRows = () => { //funciona los arrays y enseña las filas, pero no funciona el switch :/
-    const firstRow = new Array ( carta.slice(0, 5).join(" ")) ;
-    const secondRow = new Array (carta.slice(5, 10).join(" "));
-    const thirdRow = new Array (carta.slice(10, 15).join(" "));
-    switch (isLineBingo) {
-        case isLineBingo(firstRow):
-                console.log(`Linea! primera fila`);
-            break;
-        case isLineBingo(secondRow):
-                console.log(`Linea! segunda fila`);
-            break;
-        case isLineBingo(thirdRow):
-                console.log(`Linea! tercera fila`);
-            break;      
-            default:
-            break;
-    }
+const getRows = () => { 
+     firstRow = new Array ( carta.slice(0, 5).join(" ")) ;
+     secondRow = new Array (carta.slice(5, 10).join(" "));
+     thirdRow = new Array (carta.slice(10, 15).join(" "));
+
     return [`${firstRow} \n ${secondRow} \n ${thirdRow}`];
 }
 
-const isLineBingo = (element) => { // no parece que acabe de funcionar 
+const isX = (firstRow, secondRow, thirdRow) => {
     debugger;
-    if (element.every(numcheck =>numcheck ==="X")){
-        return true;
-    }
-
+    Array.from(firstRow).every(element =>{
+        if (element === "X"){
+            console.log("Linea!")
+            return true;
+        }
+        })
 }
+
 function getRandomNumber(min, max){
      const number = Math.floor(Math.random() * (max - min +1)) + min;
      return number;
@@ -176,7 +168,7 @@ const initGame = () =>{
 
 const bingo = () =>{
    do{
-       bomboRandom(), matchNumBombo(), bingoWin()  
+       bomboRandom(), matchNumBombo(), isX(), bingoWin()  
     } while (nextTurn && !isBingo)   
 }
 initGame();
