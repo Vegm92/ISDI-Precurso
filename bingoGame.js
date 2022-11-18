@@ -197,7 +197,7 @@ const initGame = () =>{
 const bingo = () =>{
    do{
     console.log("user Matches " + userDisplay.matches)
-    bingoWin(), matchNumBombo(), checkLinesRows(), bomboRandom();
-    } while (bingoDisplay.nextTurn && !bingoDisplay.isBingo)   
+    matchNumBombo(), checkLinesRows(), bomboRandom(), bingoWin();
+    } while (bingoDisplay.nextTurn && !bingoDisplay.isBingo && bingoDisplay.playBingo)   
 }
 initGame();
