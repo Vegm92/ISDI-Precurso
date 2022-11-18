@@ -1,18 +1,28 @@
 let bombo = 0; let carta = []; let historialBombo = [];
-let isBingo = false, playBingo = false, nextTurn = false;
-let user = "", puntuation = 1000, matches = 0, turns = 0; 
+let rows = []; let counterRows = {first: 0, second: 0, third: 0}
+// // let isBingo = false, playBingo = false, nextTurn = false;
+// // let user = "", puntuation = 1000, matches = 0, turns = 0;
 
-// const Userdisplay = {   
-//     user : "", 
-//     puntuation : 1000, 
-//     matches : 0, 
-//     turns : 0, 
-// }
+const bingoDisplay = {
+    isBingo : false, 
+    playBingo : false,
+    nextTurn : false
 
-debugger;
+}
+
+const userDisplay = {  
+
+    user : "", 
+    puntuation : 1000, 
+    matches : 0, 
+    turns : 0, 
+   
+}
+
 const leaderBoard = () =>{
+
     const board = new Map([["Maria", 500], ["Victor", 600], ["Roberto", 700], ["Anna", 800]])
-    if (isBingo == true){board.set(user, puntuation)}
+    if (bingoDisplay.isBingo == true){board.set(userDisplay.user, userDisplay.puntuation)}
     const sortedLeaderBoard = new Map([...board].sort((a, b) => b[1] - a[1]));
     console.log("La tabla de puntuaciones queda de la siguiente manera: ") 
     return sortedLeaderBoard.forEach((value, key) => {console.log(`${key} => ${value} puntos!`)
@@ -20,15 +30,16 @@ const leaderBoard = () =>{
 }
 
 const wellcome = () =>{
-    user = prompt(`Hola! Por favor introduce tu nombre`)
-    while (user === null || user === undefined || user.match(/\d+/) || user === "") {
+
+    userDisplay.user = prompt(`Hola! Por favor introduce tu nombre`)
+    while (userDisplay.user === null || userDisplay.user === undefined || userDisplay.user.match(/\d+/) || userDisplay.user === "") {
         alert("Debes introducir un nombre válido")
-        user = prompt("Introduce tu nombre.")
+        userDisplay.user = prompt("Introduce tu nombre.")
     }
-    alert(`Saludos ${user}!`)
+    alert(`Saludos ${userDisplay.user}!`)
     if (confirm("Quieres jugar al bingo?")){
         console.log("Iniciando bingo...");
-        playBingo = true;
+        bingoDisplay.playBingo = true;
         return 
     } else {
         confirm("Quieres salir?")
@@ -40,7 +51,7 @@ const wellcome = () =>{
 const bingoCard = () =>{
     let randomNum = 0
     for (let i = 1; carta.length < 15; i++) {
-        randomNum = getRandomNumber(1, 15)        
+        randomNum = getRandomNumber(1, 25)        
         if(carta.includes(randomNum)) { i--; randomNum = 0
         } else {carta.push(randomNum)} 
     }  
@@ -55,19 +66,30 @@ const getRows = () => {
     let firstRow = new Array ( carta.slice(0, 5).join(" ")) ;
     let secondRow = new Array (carta.slice(5, 10).join(" "));
     let thirdRow = new Array (carta.slice(10, 15).join(" "));
-
+    rows = [firstRow, secondRow, thirdRow];
     return [`${firstRow} \n ${secondRow} \n ${thirdRow}`];
 }
-let rows = getRows();
 
-const isX = (rows) => {
-    Array.from(rows).every(element =>{
-        if (element === "X"){
-            console.log("Linea!")
-            return true;
-        }
-        })
+
+const checkLinesRows = () => { 
+    let row1 = carta.slice(0,5)
+    let row2 = carta.slice(5,10)
+    let row3 = carta.slice(10,15)
+    if (!row1.some(Number) && counterRows.first === 0) {
+        counterRows.first++
+        return console.log("------------------------LINEA FILA 1------------------------")
+    }
+    if (!row2.some(Number) && counterRows.second === 0){
+        counterRows.second++
+        return console.log("------------------------LINEA FILA 2------------------------")
+    }
+    if (!row3.some(Number)&& counterRows.third === 0){
+        counterRows.third++
+        return console.log("------------------------LINEA FILA 3------------------------")
+    }
 }
+
+
 
 function getRandomNumber(min, max){
      const number = Math.floor(Math.random() * (max - min +1)) + min;
@@ -77,35 +99,32 @@ function getRandomNumber(min, max){
 const bomboRandom = (min, max) =>{
     let pulledNumbers = 0
     do{
-        pulledNumbers = getRandomNumber(1, 15);
+        pulledNumbers = getRandomNumber(1, 25);
         while (!historialBombo.includes(pulledNumbers)) {
-        historialBombo.push(pulledNumbers)
-        bombo = pulledNumbers;
-        return alert (`Número sacado del bombo es: \n el ${pulledNumbers}`) 
+            historialBombo.push(pulledNumbers)
+            bombo = pulledNumbers;
+            return alert (`Número sacado del bombo es: \n el ${pulledNumbers}`) 
+        }
+        if (historialBombo.includes(pulledNumbers)){
+            bomboRandom();
         }
     }
-    while (carta.length == 18)
+    while (carta.length == 18 && !bingoDisplay.isBingo)
 }
 
 const matchNumBombo = () =>{
-    const index = carta.indexOf(bombo);
-    
+    const index = carta.indexOf(bombo);   
     carta.forEach(element => {
-            if (element == bombo){
-            carta[index] = "X"
-            console.log(`Genial! El ${bombo} ésta en tu cartón de juego: \n ${getRows()}`) /* ${carta.join(' ')} */
-            matches ++;
-
-            if (carta.every(element =>{
-                element === "X"
-                return bingoWin();
-            }));
+        if (element == bombo){
+            carta[index] = "X"                
+            console.log(`------------------------ Genial! El ${bombo} ésta en tu cartón de juego: \n ${getRows()}`) /* ${carta.join(' ')} */
+            userDisplay.matches ++;
             }
         if (index === -1){
             return console.log(`Lástima! \n el número ${bombo} no está en tu carta`)
             }
         });
-       if(!isBingo){
+       if(!bingoDisplay.isBingo){
            newTurn();    
     }
 }
@@ -114,41 +133,43 @@ const newTurn = () =>{
 
     let seguir = confirm("¿Quieres sacar otra bola?")
     if (seguir){
-        turns ++;
-        puntuation -= 15;
-        console.log(`turnos realizados: ${turns} y tu puntuacion es: ${puntuation}`)
-        nextTurn = true;
+        userDisplay.turns ++;
+        userDisplay.puntuation -= 15;
+        bingoDisplay.nextTurn = true;
     } else {
-    nextTurn = false
+        bingoDisplay.nextTurn = false
     return fareWell()
     }
 }
+const refreshConsole = () =>{
+console.log(`\n \n \n \n \n Ok ${userDisplay.user}, vas por el turno ${userDisplay.turns}, con ${userDisplay.matches} aciertos y ${userDisplay.puntuation} puntos.`);
+}
 
 const bingoWin = () =>{
-    if(matches === 15){
+    if(userDisplay.matches === 15){
         alert(`Bingo!`);
-        isBingo = true;
-        playBingo = false
+        bingoDisplay.isBingo = true;
+        bingoDisplay.playBingo = false
         endBingoCard();
     }
 }
 
 const endBingoCard = () =>{
-     console.log(`Genial ${user}, has completado tu cartón en ${turns} turnos, felicidades!`)
+     console.log(`------------------------ Genial ${userDisplay.user}, has completado tu cartón en ${userDisplay.turns} turnos, felicidades!`)
      console.log(leaderBoard())
-     console.log(`Gracias por jugar ${user}!`)
+     console.log(`Gracias por jugar ${userDisplay.user}!`)
      return 
 }
 
 const tutorialPuntuation = () =>{
-  console.log(`La puntuación inicial es de ${puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
+  console.log(`La puntuación inicial es de ${userDisplay.puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
 }
 
 const fareWell = () =>{
-    let goodBye = `Adiós ${user}, gracias por jugar!`
+    let goodBye = `Adiós ${userDisplay.user}, gracias por jugar!`
 
     if (confirm("Confirma para salir")){
-        playBingo = false
+        bingoDisplay.playBingo = false
        return console.log(goodBye);
     } else{
         if (confirm("Reiniciar el juego?")){
@@ -163,7 +184,7 @@ const fareWell = () =>{
 const initGame = () =>{
    wellcome();
    leaderBoard();
-   switch (playBingo) {
+   switch (bingoDisplay.playBingo) {
     case true:
         tutorialPuntuation(), bingoCard(),bingo();
         break;
@@ -175,8 +196,8 @@ const initGame = () =>{
 
 const bingo = () =>{
    do{
-       bomboRandom(), matchNumBombo(), isX(), bingoWin()  
-    } while (nextTurn && !isBingo)   
+    console.log("user Matches " + userDisplay.matches)
+    bingoWin(), matchNumBombo(), checkLinesRows(), bomboRandom();
+    } while (bingoDisplay.nextTurn && !bingoDisplay.isBingo)   
 }
-console.log(lineasBingo);
 initGame();
