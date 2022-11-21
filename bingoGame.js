@@ -161,7 +161,7 @@ const bingoWin = () =>{
         alert(`Bingo!`);
         bingoDisplay.isBingo = true;
         bingoDisplay.playBingo = false
-        endBingoCard();
+       return endBingoCard();
     } else {
         newTurn();
     }
