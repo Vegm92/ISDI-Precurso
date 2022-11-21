@@ -5,9 +5,9 @@ let rows = []; let counterRows = {first: 0, second: 0, third: 0}
 const bingoDisplay = {
     isBingo : false, 
     playBingo : true,
-    nextTurn : false
-
+    nextTurn : false,
 }
+let keepPlaying = !bingoDisplay.isBingo && bingoDisplay.playBingo
 
 const userDisplay = {  
 
@@ -91,26 +91,26 @@ const checkLinesRows = () => {
 
 
 function getRandomNumber(min, max){
-    do {
+    while (bingoDisplay.playBingo && !bingoDisplay.isBingo) {
         const number = Math.floor(Math.random() * (max - min +1)) + min;
         return number;
-    }  while (bingoDisplay.playBingo && !bingoDisplay.isBingo)
+    }  
 }
 
 const bomboRandom = (min, max) =>{
     let pulledNumbers = 0
     do{
         pulledNumbers = getRandomNumber(1, 25);
-        while (!historialBombo.includes(pulledNumbers)) {
+        while (!historialBombo.includes(pulledNumbers) && bingoDisplay.playBingo) {
             historialBombo.push(pulledNumbers)
             bombo = pulledNumbers;
             return alert (`Número sacado del bombo es: \n el ${pulledNumbers}`) 
         }
         if (historialBombo.includes(pulledNumbers) && bingoDisplay.playBingo){
-            bomboRandom();
+           return bomboRandom();
         }
     }
-    while (carta.length == 18 && !bingoDisplay.isBingo && !bingoDisplay.playBingo)
+    while (carta.length == 18 && !bingoDisplay.isBingo && bingoDisplay.playBingo)
 }
 
 const matchNumBombo = () =>{
@@ -179,6 +179,7 @@ const tutorialPuntuation = () =>{
 }
 
 const fareWell = () =>{
+    debugger;
     let goodBye = `Adiós ${userDisplay.user}, gracias por jugar!`
 
     if (confirm("Confirma para salir")){
@@ -211,6 +212,7 @@ const initGame = () =>{
 
 const bingo = () =>{
    do{
+    console.log(keepPlaying); 
     console.log(`${userDisplay.user} tu puntuación: ${userDisplay.puntuation} \n y aciertos: ${userDisplay.matches}`)
     console.log(`${getRows()}`);
     matchNumBombo(), checkLinesRows(), bingoWin(), bomboRandom();
