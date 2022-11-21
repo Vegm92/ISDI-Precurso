@@ -162,16 +162,16 @@ const bingoWin = () =>{
         bingoDisplay.isBingo = true;
         bingoDisplay.playBingo = false
        return endBingoCard();
-    } else {
-        newTurn();
+    } else if(!bingoDisplay.isBingo) {
+        return newTurn();
     }
 }
 
 const endBingoCard = () =>{
      console.log(`¡¡ Genial ${userDisplay.user}, has completado tu cartón en ${userDisplay.turns} turnos, felicidades!!`)
      leaderBoard();
-     console.log(`Gracias por jugar ${userDisplay.user}!`)
-     return 
+     return console.log(`Gracias por jugar ${userDisplay.user}!`)
+      
 }
 
 const tutorialPuntuation = () =>{
