@@ -4,7 +4,7 @@ let rows = []; let counterRows = {first: 0, second: 0, third: 0}
 // // let user = "", puntuation = 1000, matches = 0, turns = 0;
 const bingoDisplay = {
     isBingo : false, 
-    playBingo : false,
+    playBingo : true,
     nextTurn : false
 
 }
@@ -54,7 +54,6 @@ const bingoCard = () =>{
         if(carta.includes(randomNum)) { i--; randomNum = 0
         } else {carta.push(randomNum)} 
     }  
-    console.clear();
     alert(`Tu carta de juego es:\n ${getRows()} `) /* ${carta.join('  ')} */
     if(confirm("Quieres otro cartón de juego distinto?")){
         carta = [];
@@ -125,24 +124,33 @@ const matchNumBombo = () =>{
         if (index === -1 && bombo !== 0){
              console.log(`Lástima! \n el número ${bombo} no está en tu carta`)
             }
-        });
-       if(!bingoDisplay.isBingo){
-        newTurn();    
-    }
+        });    
 }
 
 const newTurn = () =>{
-
-    let seguir = confirm("¿Quieres sacar otra bola?")
-    if (seguir){
+    while(!bingoDisplay.isBingo && bingoDisplay.playBingo){
+        if (confirm("¿Quieres sacar otra bola?")){
         userDisplay.turns ++;
         userDisplay.puntuation -= 15;
         bingoDisplay.nextTurn = true;
-        console.clear();
-    } else {
-        bingoDisplay.nextTurn = false
-    return fareWell()
+        return console.clear();
+        }else {
+            bingoDisplay.nextTurn = false
+        return fareWell()
+        }  
+        
     }
+    // let seguir = false;
+    // if (confirm("¿Quieres sacar otra bola?")){
+    //     seguir = true;
+    //     userDisplay.turns ++;
+    //     userDisplay.puntuation -= 15;
+    //     bingoDisplay.nextTurn = true;
+    //     return console.clear();
+    // } else {
+    //         bingoDisplay.nextTurn = false
+    //     return fareWell()
+    //     }  
 }
 const refreshConsole = () =>{
 console.log(`\n \n \n \n \n Ok ${userDisplay.user}, vas por el turno ${userDisplay.turns}, con ${userDisplay.matches} aciertos y ${userDisplay.puntuation} puntos.`);
@@ -154,6 +162,8 @@ const bingoWin = () =>{
         bingoDisplay.isBingo = true;
         bingoDisplay.playBingo = false
         endBingoCard();
+    } else {
+        newTurn();
     }
 }
 
@@ -165,7 +175,7 @@ const endBingoCard = () =>{
 }
 
 const tutorialPuntuation = () =>{
-  console.log(`La puntuación inicial es de ${userDisplay.puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
+    return  console.log(`La puntuación inicial es de ${userDisplay.puntuation} \n y por cada turno se irá restando 15puntos. \n el jugador con más puntuación, ganará.`)
 }
 
 const fareWell = () =>{
@@ -192,7 +202,9 @@ const initGame = () =>{
         tutorialPuntuation(), bingoCard(),bingo();
         break;
     case false:
-        fareWell();
+        if(!bingoDisplay.playBingo){
+            fareWell();
+        }
         break;
    }
 }
@@ -201,7 +213,7 @@ const bingo = () =>{
    do{
     console.log(`${userDisplay.user} tu puntuación: ${userDisplay.puntuation} \n y aciertos: ${userDisplay.matches}`)
     console.log(`${getRows()}`);
-    matchNumBombo(), checkLinesRows(), bomboRandom(), bingoWin();
-    } while (bingoDisplay.nextTurn && !bingoDisplay.isBingo && bingoDisplay.playBingo)   
+    matchNumBombo(), checkLinesRows(), bingoWin(), bomboRandom();
+    } while (!bingoDisplay.isBingo && bingoDisplay.nextTurn && bingoDisplay.playBingo)   
 }
 initGame();
