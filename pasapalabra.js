@@ -110,7 +110,8 @@ const userName = () => {
     const wellcome = `Hola! Bienvenido a Pasapalabra, porfavor introduce tu nombre`
     if (gameInfo.userWannaPlay == true){
           while(gameInfo.userName == '' || gameInfo.userName == null || gameInfo.userName == undefined){
-          gameInfo.userName = prompt(wellcome)}
+          gameInfo.userName = prompt(wellcome)
+        }
     alert(`usuario ${gameInfo.userName}`)
     return showRules();
     }
@@ -122,7 +123,7 @@ const showRules = () => {
   \n-Cada acierto sumará un punto.\n-El tiempo maximo de la partida són ${gameInfo.maxTime/1000} segundos.\n
   -Cuando aparezcan las definiciones: 
           ·Escribe pasapalabra si no conoces la respuesta y quieres continuar con la siguiente.
-          ·Escribe "END" para finalizar la partida actual.`);
+          ·Escribe "end" para finalizar la partida actual.`);
 }
 
 const confirmPlay= () => {
@@ -133,7 +134,7 @@ const confirmPlay= () => {
 const shootQuestions = ()=> {
     for (const letter in questions) {
       if (gameInfo.actualTime + gameInfo.maxTime <= Date.now()){
-        alert('EL TIEMPO HA TERMINADO')
+        alert('EL TIEMPO HA TERMINADO!')
             gameInfo.userWannaPlay = false
             break;
       }
