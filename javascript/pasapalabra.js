@@ -43,26 +43,26 @@ const confirmPlay= () => {
   return gameInfo.userWannaPlay
 }
 
-const shootQuestions = ()=> {
-    for (const letter in questions) {
-      if (gameInfo.actualTime + gameInfo.maxTime <= Date.now()){
-        alert('EL TIEMPO HA TERMINADO!')
-            gameInfo.userWannaPlay = false
-            break;
-      }
-      if (questions[letter].status == 0){
-        userAnswer();
-        if (gameInfo.userAnswer === null || gameInfo.userAnswer == `end`){
-          gameInfo.userWannaPlay = false;
-          break;
-        }
-        answerManager()
-      }
-      if (gameInfo.wordsAnswered == gameInfo.wordsTotal){
-        break;
-        }
-      }
-}
+// const shootQuestions = ()=> {
+//     for (const letter in questions) {
+//       if (gameInfo.actualTime + gameInfo.maxTime <= Date.now()){
+//         alert('EL TIEMPO HA TERMINADO!')
+//             gameInfo.userWannaPlay = false
+//             return;
+//       }
+//       if (questions[letter].status == 0){
+//         userAnswer();
+//         if (gameInfo.userAnswer === null || gameInfo.userAnswer == `end`){
+//           gameInfo.userWannaPlay = false;
+//           return;
+//         }
+//         answerManager()
+//       }
+//       if (gameInfo.wordsAnswered == gameInfo.wordsTotal){
+//         return;
+//         }
+//       }
+// }
 
 const startGame = () => {
   gameTimer()
@@ -78,24 +78,24 @@ const gameTimer = () => {
 
 const initRound = () => {
   for ( letter in questions ){
-      if (gameInfo.actualTime + gameInfo.maxTime <= Date.now()){
-          alert('TIME`S UP!!');
+    switch (true) {
+      case gameInfo.actualTime + gameInfo.maxTime <= Date.now():
+        alert('TIME`S UP!!');
+        gameInfo.userWannaPlay = false;
+        return;
+      case gameInfo.wordsAnswered == gameInfo.wordsTotal:
+        return;
+      case questions[letter].status == 0:
+        userAnswer();
+        if (gameInfo.userAnswer === null || gameInfo.userAnswer == 'end'){
           gameInfo.userWannaPlay = false;
-          break;
-      };
-      if(gameInfo.wordsAnswered == gameInfo.wordsTotal){
-          break;
-      };
-      if(questions[letter].status == 0){
-          userAnswer();
-          if (gameInfo.userAnswer === null || gameInfo.userAnswer == 'end'){
-              gameInfo.userWannaPlay = false;
-              break;
-          };
-          answerManager();
-      }
+          return;
+        }
+        answerManager();
+    }
   }
 }
+
 
 const userAnswer = () => {
     gameInfo.userAnswer = prompt(`${questions[letter].question}`);
@@ -105,21 +105,25 @@ const userAnswer = () => {
 };
 
 const answerManager = () => {
-  if (gameInfo.userAnswer == `pasapalabra`){
-    gameInfo.userPasapalabra +=1;
-    alert(`Siguiente pregunta! \n
-     ${gameInfo.wordsAnswered}/${gameInfo.wordsTotal} aciertos
-     \n ${gameInfo.userPasapalabra} pasapalabras`)
-  } else if (gameInfo.userAnswer == questions[letter].answer){
-    questions[letter].status = "succes";
-    gameInfo.wordsAnswered += 1;
-    alert(`Correcto! ${gameInfo.wordsAnswered}/${gameInfo.wordsTotal} aciertos`); 
-  } else {
-    questions[letter].status = `fail`;
-    gameInfo.wordsAnswered += 1; 
-    alert(`Incorrecto, la respuesta correcta es: ${questions[letter].answer}`)
+  switch (gameInfo.userAnswer) {
+    case `pasapalabra`:
+      gameInfo.userPasapalabra +=1;
+      alert(`Siguiente pregunta! \n
+       ${gameInfo.wordsAnswered}/${gameInfo.wordsTotal} aciertos
+       \n ${gameInfo.userPasapalabra} pasapalabras`);
+      break;
+    case questions[letter].answer:
+      questions[letter].status = "succes";
+      gameInfo.wordsAnswered += 1;
+      alert(`Correcto! ${gameInfo.wordsAnswered}/${gameInfo.wordsTotal} aciertos`); 
+      break;
+    default:
+      questions[letter].status = `fail`;
+      gameInfo.wordsAnswered += 1; 
+      alert(`Incorrecto, la respuesta correcta es: ${questions[letter].answer}`);
   }
-}
+};
+
 
 const sortQuestions = () => {
   questions = questionPack[Math.floor(Math.random() * 3)];
