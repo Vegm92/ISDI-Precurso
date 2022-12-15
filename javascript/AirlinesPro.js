@@ -226,3 +226,18 @@ const main = () => {
   }
 }
 main();
+
+
+const bomboRandom = (min, max) =>{
+  let pulledNumbers = [];
+  do{
+      bombo = Math.floor(Math.random() *(max - min) + min);
+      while (!pulledNumbers.includes(bombo)) {
+          alert (`Número sacado del bombo es: \n el ${bombo}`) 
+          pulledNumbers.push(bombo)
+      }
+  }
+  while (gameCard.length === 18){
+
+  }
+}

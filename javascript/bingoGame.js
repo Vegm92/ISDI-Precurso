@@ -179,7 +179,6 @@ const tutorialPuntuation = () =>{
 }
 
 const fareWell = () =>{
-    debugger;
     let goodBye = `Adiós ${userDisplay.user}, gracias por jugar!`
 
     if (confirm("Confirma para salir")){

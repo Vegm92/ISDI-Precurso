@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./styles/stylescalculator.css" rel="stylesheet" type="text/css" >
+</head>
+<body>
+ <script type="text/javascript" src="main.js"> </script>
+ <header>
+    <nav>
+        <div class="left">
+           <p class="left">Calculator by Victor.G</p> 
+        </div>
+        <div class="right">
+        </div>
+    </nav>
+    <div class="screen" id="textoSuperior"></div>
+    <div class="screen" id="textoInferior"></div>
+ </header>
+ <main>
+       <div class="set box" onclick="squareClick('^')"      id="square">X^2</div>
+       <div class="set box" onclick="clearEntryClick('CE')" id="CE">CE</div>
+       <div class="set box" onclick="restartClick()"        id="restart">C</div>
+       <div class="set box" onclick="deleteClick('Del')"    id="Del">Del</div>
+       <div class="num box" onclick="numberClick(7)"        id="seven">7</div>
+       <div class="num box" onclick="numberClick(8)"        id="eight">8</div>
+       <div class="num box" onclick="numberClick(9)"        id="nine">9</div>
+       <div class="set box" onclick="divideClick('/')"      id="divide">/</div>
+       <div class="num box" onclick="numberClick(4)"        id="four">4</div>
+       <div class="num box" onclick="numberClick(5)"        id="five">5</div>
+       <div class="num box" onclick="numberClick(6)"        id="six">6</div>
+       <div class="set box" onclick="lessClick('-')"        id="less">-</div>
+       <div class="num box" onclick="numberClick(1)"        id="one">1</div>
+       <div class="num box" onclick="numberClick(2)"        id="two">2</div>
+       <div class="num box" onclick="numberClick(3)"        id="three">3</div>
+       <div class="set box" onclick="plusClick('+')"        id="plus">+</div>
+       <div class="set box" onclick="invertClick('+/-')"    id="invert">+/-</div>
+       <div class="num box" onclick="numberClick(4)"        id="zero">0</div>
+       <div class="set box" onclick="commaClick(',')"       id="comma">,</div>
+       <div class="equal box" onclick="equalClick('=')"       id="equal">=</div>
+     </div>        
+
+ </main>
+</body>
+</html>
+
