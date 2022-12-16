@@ -14,9 +14,14 @@ const gameInfo = {
       {player : 'Mark', score : 12},
       {player : 'Julia', score : 10},
     ],
-    actualTime : null
+    actualTime : null,
 }
 
+const resetGameInfo = () =>{
+  gameInfo.userPasapalabra = 0;
+  gameInfo.wordsAnswered = 0;
+  gameInfo.wordPlaying = 0;
+}
 
 const userName = () => { 
     const wellcome = `Hola! Bienvenido a Pasapalabra, porfavor introduce tu nombre`
@@ -42,27 +47,6 @@ const confirmPlay= () => {
   gameInfo.userWannaPlay = confirm(`Quieres empezar a jugar ${gameInfo.userName}?`)
   return gameInfo.userWannaPlay
 }
-
-// const shootQuestions = ()=> {
-//     for (const letter in questions) {
-//       if (gameInfo.actualTime + gameInfo.maxTime <= Date.now()){
-//         alert('EL TIEMPO HA TERMINADO!')
-//             gameInfo.userWannaPlay = false
-//             return;
-//       }
-//       if (questions[letter].status == 0){
-//         userAnswer();
-//         if (gameInfo.userAnswer === null || gameInfo.userAnswer == `end`){
-//           gameInfo.userWannaPlay = false;
-//           return;
-//         }
-//         answerManager()
-//       }
-//       if (gameInfo.wordsAnswered == gameInfo.wordsTotal){
-//         return;
-//         }
-//       }
-// }
 
 const startGame = () => {
   gameTimer()
@@ -141,13 +125,13 @@ const rankingPlayer = () => {
    gameInfo.ranking.push({player : gameInfo.userName, score: count});
 };
 
-const rankingBoard = () => {
- console.clear();
- console.log("------------------------LEADERBOARD------------------------") 
- for (players in gameInfo.ranking){
-    console.log(gameInfo.ranking[players]);
+const showRanking= (gameInfo) => {
+  console.log("Ranking:")
+  for (let i = 0; i < gameInfo.ranking.length; i++) {
+    console.log(`${i + 1} position. ${gameInfo.ranking[i].player}: ${gameInfo.ranking[i].score} points`)
   }
 }
+
 
 const cleanString = (string) => {
   string = string.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
@@ -155,25 +139,25 @@ const cleanString = (string) => {
 }
 
 const fareWell = () => {
-  return console.log(`Gracias por utilizar ésta app`);
+  console.log(`Gracias por utilizar ésta app`);
+  return resetGameInfo();
 }
 
 const playAgain = () => {
  confirm(`Quieres volver al inicio?`) ?
-  gameInfo.userWannaPlay = true : 
-  alert(`Hasta la próxima!`)
+  gameInfo.userWannaPlay = true : fareWell();
 }
 
-const main = () => {
+const initFunction = () => {
   do{
     userName()
     if(confirmPlay()== true){
         sortQuestions()
         startGame();
-        rankingBoard();
+        showRanking(gameInfo);
     };
     playAgain();
     }while(gameInfo.userWannaPlay == true);
 };
 
-main()
+initFunction()
