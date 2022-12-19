@@ -56,7 +56,6 @@ const startGame = () => {
   while(gameInfo.userWannaPlay == true && gameInfo.wordsCorrect !=questions.length ){
       initRound()
   }
-  rankingPlayer()
 }
 
 const gameTimer = () => {
@@ -64,6 +63,9 @@ const gameTimer = () => {
 }
 
 const initRound = () => {
+  if (gameInfo.wordsAnswered + gameInfo.userPasapalabra == gameInfo.wordsTotal){
+    return gameInfo.userWannaPlay = false;
+  }
   for ( letter in questions ){
     switch (true) {
       case gameInfo.actualTime + gameInfo.maxTime <= Date.now():
@@ -130,6 +132,7 @@ const rankingPlayer = () => {
 };
 
 const showRanking= (gameInfo) => {
+  rankingPlayer()
   console.log("Ranking:")
   for (let i = 0; i < gameInfo.ranking.length; i++) {
     console.log(`${i + 1} position. ${gameInfo.ranking[i].player}: ${gameInfo.ranking[i].score} points`)
@@ -159,7 +162,7 @@ const initFunction = () => {
         sortQuestions()
         startGame();
         showRanking(gameInfo);
-    };
+      };
     playAgain();
     }while(gameInfo.userWannaPlay == true);
 };
