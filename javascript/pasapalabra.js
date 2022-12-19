@@ -8,6 +8,7 @@ const gameInfo = {
     userWannaPlay : true,
     wordPlaying : 0,
     wordsAnswered : 0,
+    wordsCorrect: 0,
     wordsTotal : questions.length,
     maxTime : 130000,
     ranking : [
@@ -20,6 +21,7 @@ const gameInfo = {
 const resetGameInfo = () =>{
   gameInfo.userPasapalabra = 0;
   gameInfo.wordsAnswered = 0;
+  gameInfo.wordsCorrect = 0;
   gameInfo.wordPlaying = 0;
 }
 
@@ -29,6 +31,7 @@ const userName = () => {
           while(gameInfo.userName == '' || gameInfo.userName == null || gameInfo.userName == undefined){
           gameInfo.userName = prompt(wellcome)
         }
+    resetGameInfo();
     alert(`usuario ${gameInfo.userName}`)
     return showRules();
     }
@@ -50,7 +53,7 @@ const confirmPlay= () => {
 
 const startGame = () => {
   gameTimer()
-  while(gameInfo.userWannaPlay == true && gameInfo.wordsAnswered !=questions.length ){
+  while(gameInfo.userWannaPlay == true && gameInfo.wordsCorrect !=questions.length ){
       initRound()
   }
   rankingPlayer()
@@ -67,7 +70,7 @@ const initRound = () => {
         alert('TIME`S UP!!');
         gameInfo.userWannaPlay = false;
         return;
-      case gameInfo.wordsAnswered == gameInfo.wordsTotal:
+      case gameInfo.wordsCorrect == gameInfo.wordsTotal:
         return;
       case questions[letter].status == 0:
         userAnswer();
@@ -93,13 +96,14 @@ const answerManager = () => {
     case `pasapalabra`:
       gameInfo.userPasapalabra +=1;
       alert(`Siguiente pregunta! \n
-       ${gameInfo.wordsAnswered}/${gameInfo.wordsTotal} aciertos
+       ${gameInfo.wordsCorrect}/${gameInfo.wordsTotal} aciertos
        \n ${gameInfo.userPasapalabra} pasapalabras`);
       break;
     case questions[letter].answer:
       questions[letter].status = "succes";
-      gameInfo.wordsAnswered += 1;
-      alert(`Correcto! ${gameInfo.wordsAnswered}/${gameInfo.wordsTotal} aciertos`); 
+      gameInfo.wordsCorrect += 1;
+      gameInfo.wordsAnswered += 1; 
+      alert(`Correcto! ${gameInfo.wordsCorrect}/${gameInfo.wordsTotal} aciertos`); 
       break;
     default:
       questions[letter].status = `fail`;
