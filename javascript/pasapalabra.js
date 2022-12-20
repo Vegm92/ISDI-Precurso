@@ -63,7 +63,7 @@ const gameTimer = () => {
 }
 
 const initRound = () => {
-  if (gameInfo.wordsAnswered + gameInfo.userPasapalabra == gameInfo.wordsTotal){
+  if (gameInfo.wordsAnswered == gameInfo.wordsTotal){
     return gameInfo.userWannaPlay = false;
   }
   for ( letter in questions ){
@@ -151,7 +151,7 @@ const fareWell = () => {
 }
 
 const playAgain = () => {
- confirm(`Quieres volver al inicio?`) ?
+ confirm(`Quieres volver a jugar?`) ?
   gameInfo.userWannaPlay = true : fareWell();
 }
 
